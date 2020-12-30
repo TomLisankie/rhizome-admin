@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 
 const PageListView = () => {
   const classes = useStyles();
-  const [customers] = useState(data);
+  const [pages] = useState(data["data"]["getSite"]["visibleBlocks"]);
 
   return (
     <Page
@@ -30,7 +30,7 @@ const PageListView = () => {
       <Container maxWidth={false}>
         <Toolbar />
         <Box mt={3}>
-          <Results customers={customers} />
+          <Results pages={pages} />
         </Box>
       </Container>
     </Page>

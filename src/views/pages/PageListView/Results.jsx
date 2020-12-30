@@ -30,42 +30,42 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Results = ({ className, customers, ...rest }) => {
+const Results = ({ className, pages, ...rest }) => {
   const classes = useStyles();
-  const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
+  const [selectedPageIds, setSelectedPageIds] = useState([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
 
   const handleSelectAll = (event) => {
-    let newSelectedCustomerIds;
+    let newSelectedPageIds;
 
     if (event.target.checked) {
-      newSelectedCustomerIds = customers.map((customer) => customer.id);
+      newSelectedPageIds = pages.map((page) => page["id"]);
     } else {
-      newSelectedCustomerIds = [];
+      newSelectedPageIds = [];
     }
 
-    setSelectedCustomerIds(newSelectedCustomerIds);
+    setSelectedPageIds(newSelectedPageIds);
   };
 
   const handleSelectOne = (event, id) => {
-    const selectedIndex = selectedCustomerIds.indexOf(id);
-    let newSelectedCustomerIds = [];
+    const selectedIndex = selectedPageIds.indexOf(id);
+    let newSelectedPageIds = [];
 
     if (selectedIndex === -1) {
-      newSelectedCustomerIds = newSelectedCustomerIds.concat(selectedCustomerIds, id);
+      newSelectedPageIds = newSelectedPageIds.concat(selectedPageIds, id);
     } else if (selectedIndex === 0) {
-      newSelectedCustomerIds = newSelectedCustomerIds.concat(selectedCustomerIds.slice(1));
-    } else if (selectedIndex === selectedCustomerIds.length - 1) {
-      newSelectedCustomerIds = newSelectedCustomerIds.concat(selectedCustomerIds.slice(0, -1));
+      newSelectedPageIds = newSelectedPageIds.concat(selectedPageIds.slice(1));
+    } else if (selectedIndex === selectedPageIds.length - 1) {
+      newSelectedPageIds = newSelectedPageIds.concat(selectedPageIds.slice(0, -1));
     } else if (selectedIndex > 0) {
-      newSelectedCustomerIds = newSelectedCustomerIds.concat(
-        selectedCustomerIds.slice(0, selectedIndex),
-        selectedCustomerIds.slice(selectedIndex + 1)
+      newSelectedPageIds = newSelectedPageIds.concat(
+        selectedPageIds.slice(0, selectedIndex),
+        selectedPageIds.slice(selectedIndex + 1)
       );
     }
 
-    setSelectedCustomerIds(newSelectedCustomerIds);
+    setSelectedPageIds(newSelectedPageIds);
   };
 
   const handleLimitChange = (event) => {
@@ -95,11 +95,11 @@ const Results = ({ className, customers, ...rest }) => {
                           </TableRow>
                       </TableHead>
                       <TableBody>
-                          {customers.slice(0, limit).map((customer) => (
+                          {pages.slice(0, limit).map((page) => (
                               <TableRow
                                   hover
-                                  key={customer.id}
-                                  selected={selectedCustomerIds.indexOf(customer.id) !== -1}
+                                  key={page["id"]}
+                                  selected={selectedPageIds.indexOf(page.id) !== -1}
                               >
                                   <TableCell>
                                       <Box
@@ -110,7 +110,7 @@ const Results = ({ className, customers, ...rest }) => {
                                               color="textPrimary"
                                               variant="body1"
                                           >
-                                              {customer.name}
+                                              {page["content"]}
                                           </Typography>
                                       </Box>
                                   </TableCell>
@@ -136,7 +136,7 @@ const Results = ({ className, customers, ...rest }) => {
           </PerfectScrollbar>
           <TablePagination
               component="div"
-              count={customers.length}
+              count={pages.length}
               onChangePage={handlePageChange}
               onChangeRowsPerPage={handleLimitChange}
               page={page}
@@ -149,7 +149,7 @@ const Results = ({ className, customers, ...rest }) => {
 
 Results.propTypes = {
   className: PropTypes.string,
-  customers: PropTypes.array.isRequired
+  pages: PropTypes.array.isRequired
 };
 
 export default Results;
